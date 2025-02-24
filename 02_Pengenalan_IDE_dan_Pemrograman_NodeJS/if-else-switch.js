@@ -20,3 +20,17 @@ if (a % 2 === 0) {
 // if(2 == '2') {
 //   console.log(true)
 // }
+
+let pilihan = 2;
+
+switch (pilihan) {
+  case 1:
+    console.log("Ini pilihan 1");
+    break;
+  case 2:
+    console.log("Ini pilihan 2");
+    break;
+  default:
+    console.log("tidak ada pilihan");
+    break;
+}
