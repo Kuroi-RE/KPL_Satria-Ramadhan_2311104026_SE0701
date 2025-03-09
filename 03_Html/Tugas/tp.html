@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Output/Input</title>
+    <style>
+      section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      input {
+        padding: 10px;
+        margin-right: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      button {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: #f4f4f4;
+        cursor: pointer;
+      }
+      #output {
+        margin-top: 10px;
+        border: #ccc 1px solid;
+        color: hsl(0, 0%, 80%);
+        width: 250px;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <div>
+        <input type="text" id="input" placeholder="Masukkan nama Anda" />
+        <button id="btn">Kirim</button>
+      </div>
+      <div id="output">Nama akan muncul disini</div>
+    </section>
+    <script>
+      const input = document.getElementById("input");
+      const btn = document.getElementById("btn");
+      const output = document.getElementById("output");
+
+      btn.addEventListener("click", function () {
+        output.innerHTML = "Hallo " + input.value;
+        output.style.color = "black";
+      });
+    </script>
+  </body>
+</html>
