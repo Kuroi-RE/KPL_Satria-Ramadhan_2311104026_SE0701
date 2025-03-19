@@ -75,12 +75,12 @@ window.deposit = function () {
     // Memperbarui tampilan saldo
     updateBalance();
     // Mengosongkan pesan error jika berhasil
-    document.getElementById("error-message").style.color = "blue";
-    document.getElementById("error-message").innerText =
+    document.getElementById("info-message").style.color = "blue";
+    document.getElementById("info-message").innerText =
       "Deposit sebesat " + amount + " berhasil";
   } catch (error) {
     // Menampilkan pesan error jika terjadi kesalahan
-    document.getElementById("error-message").innerText = error.message;
+    document.getElementById("info-message").innerText = error.message;
   }
 };
 
@@ -95,12 +95,12 @@ window.withdraw = function () {
     // Memperbarui tampilan saldo
     updateBalance();
     // Mengosongkan pesan error jika berhasil
-    document.getElementById("error-message").style.color = "blue";
-    document.getElementById("error-message").innerText =
+    document.getElementById("info-message").style.color = "blue";
+    document.getElementById("info-message").innerText =
       "Withdraw berhasil dan dikenakan biaya sebesar " + biaya;
   } catch (error) {
     // Menampilkan pesan error jika terjadi kesalahan
-    document.getElementById("error-message").innerText = error.message;
+    document.getElementById("info-message").innerText = error.message;
   }
 };
 
