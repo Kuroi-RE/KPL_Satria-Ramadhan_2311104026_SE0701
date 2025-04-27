@@ -17,7 +17,7 @@ function ReadJson(filePath) {
   }
 }
 
-const filePath = "./JM/jurnal7_1_2311104026.json";
+const filePath = "./jurnal7_1_2311104026.json";
 const jsonData = ReadJson(filePath);
 
 if (jsonData) {

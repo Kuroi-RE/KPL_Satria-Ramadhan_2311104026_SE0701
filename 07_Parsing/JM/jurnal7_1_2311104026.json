@@ -10,6 +10,6 @@
   },
   "courses": [
     { "code": "CRI2C4", "name": "Konstruksi Perangkat Lunak" },
-    { "code": "CRI2XX", "name": "Basis Data" }
+    { "code": "CRI2C5", "name": "Basis Data" }
   ]
 }
