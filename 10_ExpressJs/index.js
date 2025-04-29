@@ -1,6 +1,6 @@
 import express from "express";
 import { config } from "dotenv";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "./database/config.js";
 
 const app = express();
 
@@ -15,61 +15,66 @@ app.get("/", (req, res) => {
 });
 
 app.post("/mahasiswa", async (req, res) => {
-  const { nim, nama_lengkap, email, no_hp, tanggal_lahir, jenis_kelamin } =
-    req.body;
-
-  if (
-    !nim ||
-    !nama_lengkap ||
-    !email ||
-    !no_hp ||
-    !tanggal_lahir ||
-    !jenis_kelamin
-  ) {
-    return res.status(400).json({
-      statusCode: 400,
-      message: "Bad Request",
-      error: "Semua field harus diisi",
-    });
-  }
-
-  const prisma = new PrismaClient();
-
-  const MahasiswaAlreadyExists = prisma.mahasiswa.findUnique({
-    where: { nim: nim },
-  });
-
-  if (MahasiswaAlreadyExists) {
-    return res.status(400).json({
-      statusCode: 400,
-      message: "Bad Request",
-      error: "NIM sudah terdaftar",
-    });
-  }
-
-  const mahasiswa = await prisma.mahasiswa.create({
-    data: {
-      nim: nim,
-      nama_lengkap: nama_lengkap,
-      email: email,
-      no_hp: no_hp,
-      tanggal_lahir: tanggal_lahir,
-      jenis_kelamin: jenis_kelamin,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  });
-
   try {
-    res.status(201).json({
-      message: "Data Mahasiswa Berhasil Ditambahkan",
+    const { nim, nama_lengkap, email, no_hp, tanggal_lahir, jenis_kelamin } =
+      req.body;
+
+    // validate request body
+    if (
+      !nim ||
+      !nama_lengkap ||
+      !email ||
+      !no_hp ||
+      !tanggal_lahir ||
+      !jenis_kelamin
+    ) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Bad Request",
+        error: "All fields are required",
+      });
+    }
+
+    const mahasiswaIsAleradyExists = await prisma.mahasiswa.findUnique({
+      where: {
+        nim: nim,
+      },
+    });
+
+    if (mahasiswaIsAleradyExists) {
+      return res.status(409).json({
+        statusCode: 409,
+        message: "Conflict",
+        error: "Mahasiswa already exists",
+      });
+    }
+
+    const mahasiswa = await prisma.mahasiswa.create({
       data: {
+        nim: nim,
+        nama_lengkap: nama_lengkap,
+        email: email,
+        no_hp: no_hp,
+        tanggal_lahir: new Date(tanggal_lahir),
+        jenis_kelamin: jenis_kelamin,
+      },
+    });
+
+    await prisma.$disconnect();
+
+    res.status(201).json({
+      statusCode: 201,
+      message: "Mahasiswa created successfully",
+      data: {
+        id: mahasiswa.id,
         nim: nim,
         nama_lengkap: nama_lengkap,
         email: email,
         no_hp: no_hp,
         tanggal_lahir: tanggal_lahir,
         jenis_kelamin: jenis_kelamin,
+        createdAt: mahasiswa.createdAt,
+        updatedAt: mahasiswa.updatedAt,
       },
     });
   } catch (error) {
@@ -81,22 +86,15 @@ app.post("/mahasiswa", async (req, res) => {
   }
 });
 
-app.get("/mahasiswa", (req, res) => {
-  res.status(200).json({
-    message: "Data Mahasiswa Berhasil Diambil",
-  });
-});
+// get all mahasiswa route
 
-app.get("/mahasiswa/:nim", (req, res) => {
-  res.status(200).json({
-    message: "Data Mahasiswa Berhasil Diambil",
-  });
-});
+// get a mahasiswa by id route
 
-app.put("/mahasiswa/:nim", (req, res) => {});
+// update a mahasiswa by id route
 
-app.delete("/mahasiswa/:nim", (req, res) => {});
+// delete a mahasiswa by id route
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
